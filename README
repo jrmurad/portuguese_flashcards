@@ -1,3 +1,10 @@
 For studying.
 
-Can be made more generic if need be.
+Questions are color-coded by language because some words are ambiguous.
+For example, the same word could mean different things in different languages.
+
+Weighted randomization is presently hardcoded to favor words further down in
+the spreadsheet because those are assumed to be more recently learned and in
+more need of practice.
+
+Language variable names can be made more generic if need be.
