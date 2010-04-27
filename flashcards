@@ -1,0 +1,80 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'google_spreadsheet'
+require 'highline/import'
+
+class Array
+  # monkey patch by eventualbuddha
+  # http://snippets.dzone.com/posts/show/898
+  def random(weights=nil)
+    return random(map {|n| n.send(weights)}) if weights.is_a? Symbol
+
+    weights ||= Array.new(length, 1.0)
+    total = weights.inject(0.0) {|t,w| t+w}
+    point = rand * total
+
+    zip(weights).each do |n,w|
+      return n if w >= point
+      point -= w
+    end
+  end
+end
+
+# terminal color printing by Martin DeMello
+# http://stackoverflow.com/questions/1403353/256-color-terminal-library-for-ruby
+def set_color(fg)
+  print "\x1b[38;5;#{fg}m"
+end
+
+def reset_color
+  print "\x1b[0m"
+end
+
+def print_color(txt, fg)
+  set_color(fg)
+  print txt
+  reset_color
+end
+
+session = GoogleSpreadsheet.login('jason@thriess.com', ask('Password: ') { |q| q.echo = false})
+
+@ws = session.spreadsheet_by_key('0AtdotO_aGRLydGYtX2RaY0Z0MThHQ2VHY0VqVjA5cEE').worksheets[0]
+@weights = (1..@ws.num_rows).to_a.collect { |n| n ** 1.25 }
+
+def pick_random
+  (rand(2) == 1) ? :english : :portuguese
+end
+
+def print_random(question)
+  english, portuguese = String.new, String.new
+
+  while english.empty? || portuguese.empty?
+    row_num = (1..@ws.num_rows).to_a.random(@weights)
+    portuguese = @ws[row_num, 1]
+    english = @ws[row_num, 2]
+  end
+
+  if question == :english
+    print_color "#{english} ", 1
+    return portuguese
+  else
+    print_color "#{portuguese} ", 2
+    return english
+  end
+end
+
+input = IO.new(0, 'r')
+
+question = pick_random
+answer = print_random(question)
+
+input.each_line do |line|
+  puts answer
+  puts '-' * 80
+  sleep 0.75
+  answer = print_random(question)
+  question = pick_random
+end
+
+puts
