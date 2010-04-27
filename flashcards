@@ -21,7 +21,7 @@ class Array
   end
 end
 
-# terminal color printing by Martin DeMello
+# terminal color printing by Martin DeMello #################################
 # http://stackoverflow.com/questions/1403353/256-color-terminal-library-for-ruby
 def set_color(fg)
   print "\x1b[38;5;#{fg}m"
@@ -36,6 +36,7 @@ def print_color(txt, fg)
   print txt
   reset_color
 end
+#############################################################################
 
 session = GoogleSpreadsheet.login('jason@thriess.com', ask('Password: ') { |q| q.echo = false})
 
@@ -46,6 +47,8 @@ def pick_random
   (rand(2) == 1) ? :english : :portuguese
 end
 
+# question: type (:english or :portuguese)
+# returns translation
 def print_random(question)
   english, portuguese = String.new, String.new
 
