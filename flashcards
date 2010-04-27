@@ -56,6 +56,7 @@ def print_random(question)
     row_num = (1..@ws.num_rows).to_a.random(@weights)
     portuguese = @ws[row_num, 1]
     english = @ws[row_num, 2]
+    @weights[row_num - 1] /= 2
   end
 
   if question == :english
