@@ -41,7 +41,7 @@ end
 session = GoogleSpreadsheet.login('jason@thriess.com', ask('Password: ') { |q| q.echo = false})
 
 @ws = session.spreadsheet_by_key('0AtdotO_aGRLydGYtX2RaY0Z0MThHQ2VHY0VqVjA5cEE').worksheets[0]
-@last = ARGV[0].to_i || @ws.num_rows
+@last = ARGV.empty? ? @ws.num_rows : ARGV[0].to_i
 @weights = (1..@last).to_a.collect { |n| n ** 1.25 }
 
 def pick_random
