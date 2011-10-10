@@ -1,4 +1,6 @@
-For studying.
+Hardcoded to get its data from a spreadsheet on my Google Docs account.
+
+Usage: To display the next word, press Enter. Exit with C-d.
 
 Questions are color-coded by language because some words are ambiguous.
 For example, the same word could mean different things in different languages.
